@@ -13,7 +13,7 @@ def choose(n, k):
     if 0 <= k <= n:
         N = 1
         K = 1
-        for i in range(1, min(k, n - k) + 1):
+        for i in xrange(1, min(k, n - k) + 1):
             N *= n
             K *= i
             n -= 1

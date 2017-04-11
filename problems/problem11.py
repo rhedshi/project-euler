@@ -35,21 +35,21 @@ down, left, right, or diagonally) in the 20×20 grid?
 
 A = []
 N = int(raw_input())
-for i in range(N):
+for i in xrange(N):
     A.append(map(int, raw_input().split(' ')))
 product = 0
-for i in range(N):
-    for j in range(N):
+for i in xrange(N):
+    for j in xrange(N):
         # horizontal
         if j + 4 <= N:
             product = max(reduce(lambda x, y: x * y, A[i][j:j + 4]), product)
         # vertical
         if i + 4 <= N:
-            product = max(reduce(lambda x, y: x * y, [A[i + e][j] for e in range(4)]), product)
+            product = max(reduce(lambda x, y: x * y, [A[i + e][j] for e in xrange(4)]), product)
         # diagonals
         if i + 4 <= N and j + 4 <= N:
-            product = max(reduce(lambda x, y: x * y, [A[i + e][j + e] for e in range(4)]), product)
-            product = max(reduce(lambda x, y: x * y, [A[i + 3 - e][j + e] for e in range(4)]), product)
+            product = max(reduce(lambda x, y: x * y, [A[i + e][j + e] for e in xrange(4)]), product)
+            product = max(reduce(lambda x, y: x * y, [A[i + 3 - e][j + e] for e in xrange(4)]), product)
 print product
 
 # Answer: 70600674

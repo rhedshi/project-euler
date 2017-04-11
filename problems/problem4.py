@@ -13,8 +13,8 @@ def is_palindrome(n):
     return str(n) == str(n)[::-1]
 
 product = 0
-for a in range(100, 1000):
-    for b in range(a, 1000):
+for a in xrange(100, 1000):
+    for b in xrange(a, 1000):
         product = max(a * b, product) if is_palindrome(a * b) else product
 print product
 

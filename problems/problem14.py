@@ -33,7 +33,7 @@ def sequence(n):
         collatz[n] = sequence(3 * n + 1) + 1
         return collatz[n]
 
-for i in range(1, 1000000):
+for i in xrange(1, 1000000):
     sequence(i)
 
 print max(collatz, key=collatz.get)

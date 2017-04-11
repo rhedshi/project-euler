@@ -12,7 +12,7 @@ Find the sum of the digits in the number 100!
 """
 
 n = 1
-for i in range(1, 101):
+for i in xrange(1, 101):
     n *= i
     while n % 10 == 0:
         n /= 10

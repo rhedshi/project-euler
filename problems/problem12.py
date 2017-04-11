@@ -33,7 +33,7 @@ def is_square(n):
 
 def num_divisors(n):
     d = 0
-    for i in range(int(n ** 0.5)):
+    for i in xrange(int(n ** 0.5)):
         d += 2 if n % (i + 1) == 0 else 0
     return d - 1 if is_square(n) else d
 

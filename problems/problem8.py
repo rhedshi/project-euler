@@ -33,7 +33,7 @@ greatest product. What is the value of this product?
 
 A = map(int, list(raw_input()))
 product = 0
-for i in range(len(A) - 13):
+for i in xrange(len(A) - 13):
     product = max(reduce(lambda x, y: x * y, A[i:i + 13]), product)
 print product
 
