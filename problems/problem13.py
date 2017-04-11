@@ -108,11 +108,10 @@ numbers.
  53503534226472524250874054075591789781264330331690
 """
 
-file = open('problem13.txt', 'r')
+N = int(raw_input())
 sum = 0
-for line in file:
-    sum += int(line[:11])
+for i in xrange(N):
+    sum += int(raw_input()[:11])
 print str(sum)[:10]
-file.close()
 
 # Answer: 5537376230

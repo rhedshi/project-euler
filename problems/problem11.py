@@ -33,24 +33,23 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 down, left, right, or diagonally) in the 20×20 grid?
 """
 
-file = open('problem11.txt', 'r')
 A = []
-for line in file:
-    A.append(map(int, line.strip().split(' ')))
+N = int(raw_input())
+for i in range(N):
+    A.append(map(int, raw_input().split(' ')))
 product = 0
-for i in range(len(A)):
-    for j in range(len(A)):
+for i in range(N):
+    for j in range(N):
         # horizontal
-        if j + 4 <= len(A):
+        if j + 4 <= N:
             product = max(reduce(lambda x, y: x * y, A[i][j:j + 4]), product)
         # vertical
-        if i + 4 <= len(A):
+        if i + 4 <= N:
             product = max(reduce(lambda x, y: x * y, [A[i + e][j] for e in range(4)]), product)
         # diagonals
-        if i + 4 <= len(A) and j + 4 <= len(A):
+        if i + 4 <= N and j + 4 <= N:
             product = max(reduce(lambda x, y: x * y, [A[i + e][j + e] for e in range(4)]), product)
             product = max(reduce(lambda x, y: x * y, [A[i + 3 - e][j + e] for e in range(4)]), product)
 print product
-file.close()
 
 # Answer: 70600674

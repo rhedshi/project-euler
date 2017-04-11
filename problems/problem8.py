@@ -31,12 +31,10 @@ Find the thirteen adjacent digits in the 1000-digit number that have the
 greatest product. What is the value of this product?
 """
 
-file = open('problem8.txt', 'r')
-A = map(int, list(file.readline().strip()))
+A = map(int, list(raw_input()))
 product = 0
 for i in range(len(A) - 13):
     product = max(reduce(lambda x, y: x * y, A[i:i + 13]), product)
 print product
-file.close()
 
 # Answer: 23514624000
