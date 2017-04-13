@@ -19,18 +19,20 @@ def is_prime(n):
             return False
     return True
 
-def nth_prime(n):
-    if n == 1:
-        return 2
-    if n == 2:
-        return 3
+def gen_prime():
     i = 1
+    yield 2
+    yield 3
     while True:
-        for prime in (6 * i - 1, 6 * i + 1):
-            n -= is_prime(prime)
-            if n - 2 == 0:
-                return prime
+        for n in (6 * i - 1, 6 * i + 1):
+            if is_prime(n):
+                yield n
         i += 1
+
+def nth_prime(n):
+    for i, prime in enumerate(gen_prime()):
+        if i + 1 == n:
+            return prime
 
 print nth_prime(10001)
 
