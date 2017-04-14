@@ -13,7 +13,7 @@ def largest_prime_factor(n):
     while n % 2 == 0:
         n /= 2
         factor = 2
-    for i in xrange(3, int(n ** 0.5) + 1, 2):
+    for i in xrange(3, int(n**0.5) + 1, 2):
         while n % i == 0:
             n /= i
             factor = i

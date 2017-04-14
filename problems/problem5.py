@@ -11,7 +11,7 @@ What is the smallest positive number that is evenly divisible by all of the numb
 import math
 
 primes = [2, 3, 5, 7, 11, 13, 17, 19]
-powers = [int(math.log(20) // math.log(p)) for p in primes]
+powers = [int(math.log(20) / math.log(p)) for p in primes]
 
 print reduce(lambda x, y: x * y, map(lambda (p, a): p**a, zip(primes, powers)))
 

@@ -29,11 +29,11 @@ def triangle(n):
     return n * (n + 1) / 2
 
 def is_square(n):
-    return n ** 0.5 == int(n ** 0.5)
+    return n**0.5 == int(n**0.5)
 
 def num_divisors(n):
     d = 0
-    for i in xrange(int(n ** 0.5)):
+    for i in xrange(int(n**0.5)):
         d += 2 if n % (i + 1) == 0 else 0
     return d - 1 if is_square(n) else d
 
