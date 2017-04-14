@@ -12,12 +12,14 @@ base 10 and base 2.
 leading zeros.)
 """
 
-def is_palindrome_bin(n):
-    return bin(n)[2:] == bin(n)[-1:1:-1]
+def is_palindrome(n, base=10):
+    r = 0
+    k = n
+    while k > 0:
+        r = r * base + k % base
+        k /= base
+    return n == r
 
-def is_palindrome_dec(n):
-    return str(n) == str(n)[::-1]
-
-print sum(filter(lambda n: is_palindrome_bin(n) and is_palindrome_dec(n), xrange(1000000)))
+print sum(filter(lambda n: is_palindrome(n, 2) and is_palindrome(n, 10), xrange(1000000)))
 
 # Answer: 872187
