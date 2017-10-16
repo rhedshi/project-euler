@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''
+"""
 Command-line script for downloading problems from the website.
 
 Usage: ./project_euler.py [-h] {all, problem, range, last} ...
@@ -10,7 +10,7 @@ Main commands:
     problem     downloads single problem
     range       downloads range of problems (inclusive)
     last        downloads last n problems
-'''
+"""
 
 import argparse
 import os
@@ -20,18 +20,18 @@ from lxml import html
 import requests
 
 class Problem(object):
-    '''
+    """
     Project Euler Problem
-    '''
+    """
     def __init__(self, number, title, description):
         self.number = number            # Number
         self.title = title              # String
         self.description = description  # Array of strings
 
     def generate_full_text_description(self):
-        '''
+        """
         Generates a formatted full text description of the problem
-        '''
+        """
         title = 'Problem ' + str(self.number) + ' - ' + self.title
         underline = len(title) * '='
         description = '\n'.join([textwrap.fill(s.encode('utf-8'), 80) for s in self.description])
@@ -56,9 +56,9 @@ def main():
     return
 
 def parse_args():
-    '''
+    """
     Parse command-line arguments
-    '''
+    """
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest='command')
     # All problems
@@ -76,10 +76,10 @@ def parse_args():
     return parser.parse_args()
 
 def download_problem(number, file_path):
-    '''
+    """
     Downloads the problem to the given file path as a commented header section
     containing the full problem description.
-    '''
+    """
     # Get the problem from the website
     problem = get_problem(number)
     # Write the problem description as a commented header in the file
@@ -90,9 +90,9 @@ def download_problem(number, file_path):
     return
 
 def get_problem(number):
-    '''
+    """
     Returns a Problem created from its problem page on the website
-    '''
+    """
     # Parse the problem page on the website for title and description fields
     page = requests.get('https://projecteuler.net/problem=' + str(number))
     tree = html.fromstring(page.text)
@@ -101,9 +101,9 @@ def get_problem(number):
     return Problem(number, title, description)
 
 def get_most_recent_problem_number():
-    '''
+    """
     Returns the most recent problem number on the website
-    '''
+    """
     # Parse the recent URL for the most recently released problem number
     page = requests.get('https://projecteuler.net/recent')
     tree = html.fromstring(page.text)
@@ -111,9 +111,9 @@ def get_most_recent_problem_number():
     return int(recent_ids[0])
 
 def get_start_end_range(args):
-    '''
+    """
     Returns the start and end range for downloading problems
-    '''
+    """
     start = 0
     end = 0
     most_recent = get_most_recent_problem_number()
