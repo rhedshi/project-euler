@@ -7,4 +7,7 @@ __pycache__/
 env/
 virtualenv/
 
+# Linter
+.flake8
+
 .DS_Store

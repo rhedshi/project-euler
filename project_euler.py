@@ -1,142 +1,190 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-"""
-Command-line script for downloading problems from the website.
-
-Usage: ./project_euler.py [-h] {all, problem, range, last} ...
-
-Main commands:
-    all         downloads all the problems
-    problem     downloads single problem
-    range       downloads range of problems (inclusive)
-    last        downloads last n problems
-"""
-
-import argparse
 import os
 import textwrap
+from typing import ClassVar, List, Tuple
 
-from lxml import html
+from bs4 import BeautifulSoup
+import click
 import requests
 
-class Problem(object):
-    """
-    Project Euler Problem
-    """
-    def __init__(self, number, title, description):
-        self.number = number            # Number
-        self.title = title              # String
-        self.description = description  # Array of strings
 
-    def generate_full_text_description(self):
+class Problem():
+    """
+    Represents a Project Euler problem.
+    """
+
+    number: int
+    title: str
+    description: List[str]
+
+    def __init__(self, number: int, title: str, description: List[str]) -> None:
+        self.number = number
+        self.title = title
+        self.description = description
+
+    def __str__(self) -> str:
         """
-        Generates a formatted full text description of the problem
+        Returns the string representation of this problem.
         """
-        title = 'Problem ' + str(self.number) + ' - ' + self.title
-        underline = len(title) * '='
-        description = '\n'.join([textwrap.fill(s.encode('utf-8'), 80) for s in self.description])
-        return title + '\n' + underline + '\n' + description
+        title = f'Problem {self.number} - {self.title}'
+        underline = '=' * len(title)
+        description = '\n\n'.join([
+            textwrap.fill(s, 80)
+            for s in self.description
+        ])
 
-def main():
-    args = parse_args()
-    # Creates a Problems folder if there isn't one
-    if not os.path.exists('./problems'):
-        os.mkdir('problems')
-    # Get the start and end range for problems
-    start, end = get_start_end_range(args)
-    for i in xrange(start, end):
-        # Check if the problem file already exists
-        file_name = 'problem' + str(i) + '.py'
-        file_path = './problems/' + file_name
-        if os.path.exists(file_path):
-            # Do not overwrite if the file already exists
-            pass
-        else:
-            download_problem(i, file_path)
-    return
+        return f'{title}\n{underline}\n\n{description}'
 
-def parse_args():
-    """
-    Parse command-line arguments
-    """
-    parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(dest='command')
-    # All problems
-    parser_all = subparsers.add_parser('all', help='downloads all problems')
-    # Single problem
-    parser_single = subparsers.add_parser('problem', help='downloads single problem')
-    parser_single.add_argument('problem_number', metavar='n', type=int, help='problem number')
-    # Range of problems (inclusive)
-    parser_range = subparsers.add_parser('range', help='downloads range of problems (inclusive)')
-    parser_range.add_argument('start', type=int, help='problem number')
-    parser_range.add_argument('end', type=int, help='problem number')
-    # Last n problems
-    parser_last = subparsers.add_parser('last', help='downloads last n problems')
-    parser_last.add_argument('last', metavar='n', type=int, help='number of problems')
-    return parser.parse_args()
 
-def download_problem(number, file_path):
+class ProjectEuler():
     """
-    Downloads the problem to the given file path as a commented header section
-    containing the full problem description.
+    Class for querying and downloading problems from the Project Euler website.
     """
-    # Get the problem from the website
-    problem = get_problem(number)
-    # Write the problem description as a commented header in the file
-    f = open(file_path, 'w')
-    f.write('# -*- coding: utf-8 -*-\n')
-    f.write('"""\n' + problem.generate_full_text_description() + '"""\n')
-    f.close()
-    return
 
-def get_problem(number):
-    """
-    Returns a Problem created from its problem page on the website
-    """
-    # Parse the problem page on the website for title and description fields
-    page = requests.get('https://projecteuler.net/problem=' + str(number))
-    tree = html.fromstring(page.text)
-    title = tree.xpath('//h2/text()')[0]
-    description = tree.xpath('//div[@class="problem_content"]//text()')
-    return Problem(number, title, description)
+    PROBLEMS_DIR: ClassVar[str] = './problems'
 
-def get_most_recent_problem_number():
-    """
-    Returns the most recent problem number on the website
-    """
-    # Parse the recent URL for the most recently released problem number
-    page = requests.get('https://projecteuler.net/recent')
-    tree = html.fromstring(page.text)
-    recent_ids = tree.xpath('//table[@id="problems_table"]//tr/td[1]/text()')
-    return int(recent_ids[0])
+    @staticmethod
+    def get_last_id() -> int:
+        """
+        Returns the most recent problem number on the website.
+        """
+        url = 'https://projecteuler.net/recent'
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
 
-def get_start_end_range(args):
+        last_id = soup \
+            .find('table') \
+            .find_all('tr')[1] \
+            .find_all('td')[0] \
+            .get_text()
+
+        return int(last_id)
+
+    @staticmethod
+    def get_problem(number: int) -> Problem:
+        """
+        Returns the problem scraped from the website.
+        """
+        url = f'https://projecteuler.net/problem={number}'
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+
+        title = soup.find('h2').get_text()
+        problem_content = soup.find('div', class_='problem_content')
+
+        description = []
+
+        for child in problem_content.children:
+            try:
+                text = child.get_text()
+            except AttributeError:
+                continue
+            description.append(text)
+
+        return Problem(number, title, description)
+
+    @staticmethod
+    def write_problem(problem: Problem, file_path: str) -> None:
+        """
+        Writes the problem to the given file path.
+        """
+        with open(file_path, 'w') as f:
+            f.write('#!/usr/bin/env python3\n')
+            f.write('# -*- coding: utf-8 -*-\n')
+            f.write('\n"""\n')
+            f.write(str(problem))
+            f.write('\n"""\n')
+
+    @classmethod
+    def download_problems(cls,
+                          start: int, end: int,
+                          dir: str, overwrite: bool=False) -> None:
+        """
+        Downloads a range of problems (inclusive) from the website to the
+        given directory.
+        """
+        if not os.path.exists(dir):
+            raise Exception(f'The \'{dir}\' directory does not exist.')
+
+        if not os.path.isdir(dir):
+            raise Exception(f'\'{dir}\' is not a directory.')
+
+        for i in range(start, end + 1):
+            file_path = os.path.join(dir, f'{i:03}_problem.py')
+
+            # WARNING: Do not overwrite existing file
+            if not overwrite and os.path.exists(file_path):
+                continue
+
+            problem = cls.get_problem(i)
+            cls.write_problem(problem, file_path)
+
+
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+@click.option(
+    '--all',
+    is_flag=True,
+    default=False,
+    help='Download all the problems.',
+)
+@click.option(
+    '--tail',
+    nargs=1,
+    type=int,
+    metavar='N',
+    help='Download the last N problems.',
+)
+@click.option(
+    '--overwrite',
+    is_flag=True,
+    default=False,
+    help='Overwrite any existing problem files.',
+)
+@click.argument(
+    'problems',
+    nargs=-1,
+    type=str,
+)
+def download(all: bool, tail: int,
+             overwrite: bool, problems: Tuple[str]) -> None:
     """
-    Returns the start and end range for downloading problems
+    Download Project Euler problems from the website.
+
+    [PROBLEMS] - List of problem number ranges (ex. '1-5 10 20-25')
     """
-    start = 0
-    end = 0
-    most_recent = get_most_recent_problem_number()
-    if args.command == 'all':
-        start = 1
-        end = most_recent + 1
-    elif args.command == 'problem':
-        start = args.problem_number
-        end = args.problem_number + 1
-    elif args.command == 'range':
-        start = args.start
-        end = args.end + 1
-    elif args.command == 'last':
-        start = most_recent - args.last + 1
-        end = most_recent + 1
-    else:
-        pass
-    # Ensure start and end stay within allowable range
-    start = min(max(start, 1), most_recent + 1)
-    end = min(max(end, 1), most_recent + 1)
-    if start > end:
-        start, end = end, start
-    return start, end
+    path = ProjectEuler.PROBLEMS_DIR
+
+    if not os.path.exists(path):
+        if click.confirm(f'Create the {path} directory?'):
+            os.mkdir(path)
+
+    if overwrite:
+        overwrite = click.confirm('Overwrite existing problem files?')
+
+    last = ProjectEuler.get_last_id()
+
+    if all:
+        problems = (f'1-{last}',)
+    if tail:
+        problems = (f'{last - tail + 1}-{last}',)
+
+    for group in problems:
+        try:
+            start, end = (
+                int(num)
+                for num in group.split('-')
+            )
+        except ValueError:
+            start, end = int(group), int(group)
+
+        ProjectEuler.download_problems(start, end, path, overwrite)
+
 
 if __name__ == "__main__":
-    main()
+    cli()
