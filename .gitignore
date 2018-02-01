@@ -10,4 +10,7 @@ virtualenv/
 # Linter
 .flake8
 
+# mypy
+.mypy_cache/
+
 .DS_Store
