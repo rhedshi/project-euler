@@ -7,6 +7,9 @@ __pycache__/
 env/
 virtualenv/
 
+# Packages
+*.egg-info/
+
 # Linter
 .flake8
 
