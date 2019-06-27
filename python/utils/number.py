@@ -60,7 +60,7 @@ def is_factorion(n: int) -> bool:
     return sum(map(lambda x: factorial(int(x)), str(n))) == n
 
 
-def is_palindrome(n: int, base: int=10) -> bool:
+def is_palindrome(n: int, base: int = 10) -> bool:
     """
     Returns True if n is a palindromic number.
     """
@@ -74,7 +74,7 @@ def is_palindrome(n: int, base: int=10) -> bool:
     return n == m
 
 
-def is_lychrel(n: int, iterations: int=50) -> bool:
+def is_lychrel(n: int, iterations: int = 50) -> bool:
     """
     Returns True if n is a Lychrel number within the number of iterations.
     """
@@ -84,8 +84,11 @@ def is_lychrel(n: int, iterations: int=50) -> bool:
     return not (is_palindrome(n) or not is_lychrel(n, iterations - 1))
 
 
-def is_pandigital(n: Union[int, str],
-                  base: int=10, zero: bool=False) -> bool:
+def is_pandigital(
+    n: Union[int, str],
+    base: int = 10,
+    zero: bool = False,
+) -> bool:
     """
     Returns True if n is pandigital.
     """
@@ -112,7 +115,7 @@ def is_square(n: int) -> bool:
     return int(n ** 0.5) ** 2 == n
 
 
-def is_triangular(n: int, zero: bool=False) -> bool:
+def is_triangular(n: int, zero: bool = False) -> bool:
     """
     Returns True if n is a triangular number.
     """
@@ -122,7 +125,7 @@ def is_triangular(n: int, zero: bool=False) -> bool:
     return i * (i + 1) // 2 == n
 
 
-def gen_triangular(zero: bool=False) -> Generator[int, None, None]:
+def gen_triangular(zero: bool = False) -> Generator[int, None, None]:
     """
     Generator function for triangular numbers.
     """
@@ -139,7 +142,7 @@ def nth_triangular(n: int) -> int:
     return n * (n + 1) // 2
 
 
-def is_pentagonal(n: int, zero: bool=False) -> bool:
+def is_pentagonal(n: int, zero: bool = False) -> bool:
     """
     Returns True if n is a pentagonal number.
     """
@@ -149,7 +152,7 @@ def is_pentagonal(n: int, zero: bool=False) -> bool:
     return i * (3 * i - 1) // 2 == n
 
 
-def gen_pentagonal(zero: bool=False) -> Generator[int, None, None]:
+def gen_pentagonal(zero: bool = False) -> Generator[int, None, None]:
     """
     Generator function for pentagonal numbers.
     """
@@ -166,7 +169,7 @@ def nth_pentagonal(n: int) -> int:
     return n * (3 * n - 1) // 2
 
 
-def is_hexagonal(n: int, zero: bool=False) -> bool:
+def is_hexagonal(n: int, zero: bool = False) -> bool:
     """
     Returns True if n is a hexagonal number.
     """
@@ -176,7 +179,7 @@ def is_hexagonal(n: int, zero: bool=False) -> bool:
     return i * (2 * i - 1) == n
 
 
-def gen_hexagonal(zero: bool=False) -> Generator[int, None, None]:
+def gen_hexagonal(zero: bool = False) -> Generator[int, None, None]:
     """
     Generator function for hexagonal numbers.
     """
@@ -193,7 +196,7 @@ def nth_hexagonal(n: int) -> int:
     return n * (2 * n - 1)
 
 
-def divisors(n: int, proper: bool=False) -> List[int]:
+def divisors(n: int, proper: bool = False) -> List[int]:
     """
     Returns the list of divisors of n.
     """
@@ -205,14 +208,14 @@ def divisors(n: int, proper: bool=False) -> List[int]:
     return sorted(s) if not proper else sorted(s)[:-1]
 
 
-def num_divisors(n: int, proper: bool=False) -> int:
+def num_divisors(n: int, proper: bool = False) -> int:
     """
     Returns the number of divisors of n.
     """
     return len(divisors(n, proper))
 
 
-def sum_divisors(n: int, proper: bool=False) -> int:
+def sum_divisors(n: int, proper: bool = False) -> int:
     """
     Returns the sum of all divisors of n.
     """
