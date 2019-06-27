@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from typing import Generator, Optional, Set
+from typing import Generator, List, Optional
+
 from utils.number import cyclic_permutations
 
 
@@ -59,15 +60,16 @@ def nth_prime(n: int) -> Optional[int]:
     """
     Returns the nth prime number.
     """
+    if n < 1:
+        return None
     for i, prime in enumerate(gen_prime(), start=1):
         if i == n:
             return prime
-    return None
 
 
-def prime_factors(n: int) -> Set[int]:
+def prime_factors(n: int) -> List[int]:
     """
-    Returns the set of distinct prime factors of n.
+    Returns the list of distinct prime factors of n.
     """
     factors = set()
     for prime in gen_prime():
@@ -76,7 +78,7 @@ def prime_factors(n: int) -> Set[int]:
         while n % prime == 0:
             factors.add(prime)
             n = n // prime
-    return factors
+    return sorted(factors)
 
 
 def largest_prime_factor(n: int) -> Optional[int]:

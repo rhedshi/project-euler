@@ -37,20 +37,27 @@ def kth_permutation(A: List[Any], k: int) -> List[Any]:
     """
     if A == []:
         return []
+
     N = len(A)
     i = (k - 1) // factorial(N - 1)
-    return [A[i]] + kth_permutation(A[:i] + A[i + 1:], k - i * factorial(N - 1))
+
+    return [
+        A[i],
+    ] + kth_permutation(
+        A[:i] + A[i + 1:],
+        k - i * factorial(N - 1),
+    )
 
 
 def cyclic_permutations(n: int) -> List[int]:
     """
     Returns all lexicographically sorted unique cyclic permutations of n.
     """
-    result = set()
+    permutations = set()
     s = str(n)
     for i in range(len(s)):
-        result.add(int(s[i:] + s[:i]))
-    return sorted(result)
+        permutations.add(int(s[i:] + s[:i]))
+    return sorted(permutations)
 
 
 def is_factorion(n: int) -> bool:
@@ -66,12 +73,13 @@ def is_palindrome(n: int, base: int = 10) -> bool:
     """
     if base == 10:
         return str(n) == str(n)[::-1]
-    m = 0
-    k = n
-    while k > 0:
-        m = m * base + k % base
-        k = k // base
-    return n == m
+    else:
+        m = 0
+        k = n
+        while k > 0:
+            m = m * base + k % base
+            k = k // base
+        return n == m
 
 
 def is_lychrel(n: int, iterations: int = 50) -> bool:
@@ -84,16 +92,12 @@ def is_lychrel(n: int, iterations: int = 50) -> bool:
     return not (is_palindrome(n) or not is_lychrel(n, iterations - 1))
 
 
-def is_pandigital(
-    n: Union[int, str],
-    base: int = 10,
-    zero: bool = False,
-) -> bool:
+def is_pandigital(n: Union[int, str], zero: bool = False) -> bool:
     """
     Returns True if n is pandigital.
     """
     s = str(n)
-    return [str(d) for d in range(0 if zero else 1, base)] == sorted(s)
+    return [str(d) for d in range(0 if zero else 1, 10)] == sorted(s)
 
 
 def is_pythagorean(a: int, b: int, c: int) -> bool:
