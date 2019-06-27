@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import os
 import textwrap
 from typing import List, Tuple
@@ -9,6 +10,9 @@ import click
 import requests
 
 from constants import ROOT_DIR
+
+logging.basicConfig(format='[%(levelname)s]: %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 PROBLEMS_DIR = os.path.join(ROOT_DIR, 'problems')
@@ -135,6 +139,9 @@ def get_problem(number: int) -> Problem:
     Return the problem number scraped from the website.
     """
     url = f'https://projecteuler.net/problem={number}'
+
+    logger.info(f'Getting {number:03} from {url}')
+
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -157,6 +164,8 @@ def write_problem(problem: Problem, file_path: str) -> None:
     """
     Write the problem to the given file path.
     """
+    logger.info(f'Writing {problem.number:03} to {file_path}')
+
     with open(file_path, 'w') as f:
         f.write('#!/usr/bin/env python3\n')
         f.write('# -*- coding: utf-8 -*-\n')
@@ -187,6 +196,7 @@ def download_problems(
 
         # WARNING: Do not overwrite existing file
         if os.path.exists(file_path) and not overwrite:
+            logger.info(f'...Skipping {i:03}')
             continue
 
         problem = get_problem(i)
