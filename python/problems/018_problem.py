@@ -41,10 +41,7 @@ clever method! ;)
 
 N = 15
 A = [
-    list(map(
-        int,
-        input().split(' '),
-    ))
+    list(map(int, input().split(' ')))
     for _ in range(N)
 ]
 

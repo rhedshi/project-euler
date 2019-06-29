@@ -21,10 +21,10 @@ sorted_names = sorted(input().replace('"', '').split(','))
 
 total = 0
 for i, name in enumerate(sorted_names, start=1):
-    total += sum(
+    total += sum([
         ord(c) - ord('A') + 1
-        for c in name,
-    ) * i
+        for c in name
+    ]) * i
 
 print(total)
 

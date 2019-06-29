@@ -40,10 +40,7 @@ import operator
 
 N = 20
 A = [
-    list(map(
-        int,
-        input().split(' '),
-    ))
+    list(map(int, input().split(' ')))
     for _ in range(N)
 ]
 
