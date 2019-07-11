@@ -19,7 +19,7 @@ Evaluate the sum of all the amicable numbers under 10000.
 
 from utils.number import sum_divisors
 
-memoize = {}
+memoize = {}  # type: ignore
 
 sum = 0
 for a in range(10000):

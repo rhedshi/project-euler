@@ -65,6 +65,7 @@ def nth_prime(n: int) -> Optional[int]:
     for i, prime in enumerate(gen_prime(), start=1):
         if i == n:
             return prime
+    return None
 
 
 def prime_factors(n: int) -> List[int]:

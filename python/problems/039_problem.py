@@ -15,7 +15,7 @@ For which value of p ≤ 1000, is the number of solutions maximised?
 
 from utils.number import is_pythagorean
 
-memoize = {}
+memoize = {}  # type: ignore
 
 for a in range(1, 1001):
     for b in range(a + 1, 1001 - a):

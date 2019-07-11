@@ -25,7 +25,7 @@ NOTE: Once the chain starts the terms are allowed to go above one million.
 
 from utils.number import gen_collatz
 
-memoize = {}
+memoize = {}  # type: ignore
 
 for start in range(1, 1000000):
     length = 0

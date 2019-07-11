@@ -11,9 +11,6 @@ virtualenv/
 # Packages
 *.egg-info/
 
-# Linter
-.flake8
-
 # mypy
 .mypy_cache/
 
