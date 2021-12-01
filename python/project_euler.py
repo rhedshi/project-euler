@@ -105,7 +105,7 @@ class Problem():
 
     def __str__(self) -> str:
         """
-        Returns the string representation of this problem.
+        Return the string representation of this problem.
         """
         title = f'Problem {self.number} - {self.title}'
         underline = '=' * len(title)
