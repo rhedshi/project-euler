@@ -1,6 +1,6 @@
 # Project Euler
 
-![Leonhard Euler (1707-1783)](https://projecteuler.net/images/euler_portrait.png)
+![Leonhard Euler (1707-1783)](https://github.com/rhedshi/project-euler/blob/master/euler_portrait.png)
 
 
 ### Where should I start?
